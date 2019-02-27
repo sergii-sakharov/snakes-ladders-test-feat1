@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace SnakesAndLadders.Tests
@@ -8,6 +9,7 @@ namespace SnakesAndLadders.Tests
         private readonly Die _die;
 
         private Player[] _players;
+        private Player _winner;
         private IEnumerator<Player> _playerTurnEnumerator;
 
         public GameEngine(Board board, Die die)
@@ -40,14 +42,27 @@ namespace SnakesAndLadders.Tests
             }
         }
 
-        public void NextTurn()
+        public bool NextTurn()
         {
+            if (_winner != null)
+                return false;
+
             _playerTurnEnumerator.MoveNext();
-            var currentPlayer = _playerTurnEnumerator.Current;
+            var currentToken = _playerTurnEnumerator.Current.Token;
 
             var dieRoll = _die.Roll();
 
-            _board.MoveToken(currentPlayer.Token, dieRoll);
+            _board.MoveToken(currentToken, dieRoll);
+
+            var hasWon = _board.GetPosition(currentToken) == Board.Size;
+            _winner = _playerTurnEnumerator.Current;
+
+            return !hasWon;
+        }
+
+        public Player GetWinner()
+        {
+            return _winner;
         }
     }
 }

@@ -31,15 +31,50 @@ namespace SnakesAndLadders.Tests
             Assert.Equal(4, newPosition - oldPosition);
         }
 
-
         /// Given the token is on square 97
         /// When the token is moved 3 spaces
         /// Then the token is on square 100
         /// And the player has won the game
+        [Fact]
+        public void WhenPlayerReachesEndOfBoard_GameEngineShouldEndTheGame()
+        {
+            var player = new Player("name");
+            var board = new Board();
+            var game = new GameEngine(board, new MockDie(3));
+            game.Begin(player);
+
+            board.MoveToken(player.Token, 96);
+            var playerPositionBeforeTheMove = board.GetPosition(player.Token);
+            var gameIsOn = game.NextTurn();
+            var playerPositionAfterTheMove = board.GetPosition(player.Token);
+
+            Assert.Equal(97, playerPositionBeforeTheMove);
+            Assert.Equal(100, playerPositionAfterTheMove);
+            Assert.False(gameIsOn);
+            Assert.Equal(player, game.GetWinner());
+        }
 
         /// Given the token is on square 97
         /// When the token is moved 4 spaces
         /// Then the token is on square 97
         /// And the player has not won the game
+        [Fact]
+        public void WhenPlayerGoesOutOfBounds_MoveIsIgnored()
+        {
+            var player = new Player("name");
+            var board = new Board();
+            var game = new GameEngine(board, new MockDie(4));
+            game.Begin(player);
+
+            board.MoveToken(player.Token, 96);
+            var playerPositionBeforeTheMove = board.GetPosition(player.Token);
+            var gameIsOn = game.NextTurn();
+            var playerPositionAfterTheMove = board.GetPosition(player.Token);
+
+            Assert.Equal(97, playerPositionBeforeTheMove);
+            Assert.Equal(97, playerPositionAfterTheMove);
+            Assert.True(gameIsOn);
+            Assert.Equal(player, game.GetWinner());
+        }
     }
 }
