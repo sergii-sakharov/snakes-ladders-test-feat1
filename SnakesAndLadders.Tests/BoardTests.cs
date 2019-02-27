@@ -42,6 +42,28 @@ namespace SnakesAndLadders.Tests
             Assert.Equal(4, newPosition);
         }
 
+        /// <summary>
+        /// Given the token is on square 1
+        /// When the token is moved 3 spaces
+        /// And then it is moved 4 spaces
+        /// Then the token is on square 8
+        /// </summary>
+        [Fact]
+        public void MovingTokenTwice_Will_OffsetItsPosition()
+        {
+            var token = new Token();
+            var board = new Board();
+
+            board.RegisterToken(token);
+            var initPosition = board.GetPosition(token);
+            board.MoveToken(token, 3);
+            board.MoveToken(token, 4);
+            var newPosition = board.GetPosition(token);
+
+            Assert.Equal(1, initPosition);
+            Assert.Equal(8, newPosition);
+        }
+
         [Fact]
         public void RegisteringPlayerTwice_WouldThrowException()
         {
