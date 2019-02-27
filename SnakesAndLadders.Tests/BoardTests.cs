@@ -1,60 +1,56 @@
 using System;
-using System.Collections.Generic;
 using Xunit;
 
 namespace SnakesAndLadders.Tests
 {
     public class BoardTests
     {
+        /// <summary>
+        /// Given the game is started
+        /// When the token is placed on the board
+        /// Then the token is on square 1
+        /// </summary>
         [Fact]
         public void PlayerRegistered_ShouldBeOnPosition1()
         {
-            var player = new Player("name");
+            var token = new Token();
             var board = new Board();
 
-            board.RegisterPlayer(player);
-            var position = board.GetPosition(player);
+            board.RegisterToken(token);
+            var position = board.GetPosition(token);
 
             Assert.Equal(1, position);
+        }
+
+        /// <summary>
+        /// Given the token is on square 1
+        /// When the token is moved 3 spaces
+        /// Then the token is on square 4
+        /// </summary>
+        [Fact]
+        public void MovingToken_Will_OffsetItsPosition()
+        {
+            var token = new Token();
+            var board = new Board();
+
+            board.RegisterToken(token);
+            var initPosition = board.GetPosition(token);
+            board.MoveToken(token, 3);
+            var newPosition = board.GetPosition(token);
+
+            Assert.Equal(1, initPosition);
+            Assert.Equal(4, newPosition);
         }
 
         [Fact]
         public void RegisteringPlayerTwice_WouldThrowException()
         {
-            var player = new Player(null);
+            var token = new Token();
             var board = new Board();
 
-            board.RegisterPlayer(player);
+            board.RegisterToken(token);
 
-            Assert.Throws<ArgumentException>(nameof(player), () => board.RegisterPlayer(player));
-        }
-    }
-
-    public class Board
-    {
-        private IDictionary<Guid, int> _playerPositionMap;
-        public const int Size = 100;
-        private const int StartPosition = 1;
-
-        public Board()
-        {
-            _playerPositionMap = new Dictionary<Guid, int>();
-        }
-
-        public void RegisterPlayer(Player player)
-        {
-            if(_playerPositionMap.ContainsKey(player.Id))
-                throw new ArgumentException("Player with this Id is already on the board", nameof(player));
-
-            _playerPositionMap.Add(player.Id, StartPosition);
-        }
-
-        public int GetPosition(Player player)
-        {
-            if(!_playerPositionMap.ContainsKey(player.Id))
-                throw new ArgumentException("Player is not on the board", nameof(player));
-
-            return _playerPositionMap[player.Id];
+            Assert.Throws<ArgumentException>(nameof(token), () => board.RegisterToken(token));
         }
     }
 }
