@@ -35,10 +35,8 @@ namespace SnakesAndLadders.Tests
             if (!_tokenPositionMap.ContainsKey(token.Id))
                 throw new ArgumentException("Token is not on the board", nameof(token));
 
-            _tokenPositionMap[token.Id] += numberOfSteps;
-
-            if (_tokenPositionMap[token.Id] >= Size)
-                _tokenPositionMap[token.Id] = Size;
+            if (_tokenPositionMap[token.Id] + numberOfSteps <= Size)
+                _tokenPositionMap[token.Id] += numberOfSteps;
         }
 
         public void Clear()
