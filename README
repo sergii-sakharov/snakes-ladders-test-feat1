@@ -1,0 +1,4 @@
+1. The project is not thread safe in any way: Dictionary used for board; Die implementation are very sensitive to race conditions to name a few
+2. GameEngine at the moment contains too much dynamic state - which ideally should be extracted in a separate object
+3. Most of the edge-cases have not been handled properly: checking invariants; throwing meaningful exceptions is not yet implemented
+4. The state of the system after the game is won might not be locked fully/have not been tested.
