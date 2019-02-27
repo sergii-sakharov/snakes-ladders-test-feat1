@@ -40,5 +40,10 @@ namespace SnakesAndLadders.Tests
             if (_tokenPositionMap[token.Id] >= Size)
                 _tokenPositionMap[token.Id] = Size;
         }
+
+        public void Clear()
+        {
+            _tokenPositionMap.Clear();
+        }
     }
 }
